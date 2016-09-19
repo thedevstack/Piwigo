@@ -778,7 +778,7 @@ $conf['pem_languages_category'] = 8;
 $conf['upload_form_automatic_rotation'] = true;
 
 // 0-'auto', 1-'derivative' 2-'script'
-$conf['derivative_url_style']=0;
+$conf['derivative_url_style']=2;
 
 $conf['chmod_value']= substr_compare(PHP_SAPI, 'apa', 0, 3)==0 ? 0777 : 0755;
 
@@ -794,7 +794,7 @@ $conf['max_requests']=3;
 
 // one of '', 'images', 'all'
 //TODO: Put this in admin and also manage .htaccess in #sites and upload folders
-$conf['original_url_protection'] = '';
+$conf['original_url_protection'] = 'all';
 
 
 // Default behaviour when a new album is created: should the new album inherit the group/user
