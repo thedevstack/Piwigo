@@ -111,7 +111,7 @@ define('MKGETDIR_PROTECT_INDEX', 4);
 /** sets mkgetdir() add a .htaccess file*/
 define('MKGETDIR_PROTECT_HTACCESS', 8);
 /** default options for mkgetdir() = MKGETDIR_RECURSIVE | MKGETDIR_DIE_ON_ERROR | MKGETDIR_PROTECT_INDEX */
-define('MKGETDIR_DEFAULT', MKGETDIR_RECURSIVE | MKGETDIR_DIE_ON_ERROR | MKGETDIR_PROTECT_INDEX);
+define('MKGETDIR_DEFAULT', MKGETDIR_RECURSIVE | MKGETDIR_DIE_ON_ERROR | MKGETDIR_PROTECT_HTACCESS);
 
 /**
  * creates directory if not exists and ensures that directory is writable
