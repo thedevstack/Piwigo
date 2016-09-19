@@ -29,8 +29,7 @@ defined('PWG_LOCAL_DIR') or define('PWG_LOCAL_DIR', 'local/');
 defined('PWG_DERIVATIVE_DIR') or define('PWG_DERIVATIVE_DIR', $conf['data_location'].'i/');
 
 @include(PHPWG_ROOT_PATH.PWG_LOCAL_DIR .'config/database.inc.php');
-
-include(PHPWG_ROOT_PATH . 'include/Logger.class.php');
+include_once(PHPWG_ROOT_PATH.'include/common.inc.php');
 
 $logger = new Logger(array(
   'directory' => PHPWG_ROOT_PATH . $conf['data_location'] . $conf['log_dir'],
@@ -40,40 +39,6 @@ $logger = new Logger(array(
   // (secret_key is in the database)
   'filename' => 'log_' . date('Y-m-d') . '_' . sha1(date('Y-m-d') . $conf['db_password']) . '.txt',
   ));
-
-
-function trigger_notify() {}
-function get_extension( $filename )
-{
-  return substr( strrchr( $filename, '.' ), 1, strlen ( $filename ) );
-}
-
-function mkgetdir($dir)
-{
-  if ( !is_dir($dir) )
-  {
-    global $conf;
-    if (substr(PHP_OS, 0, 3) == 'WIN')
-    {
-      $dir = str_replace('/', DIRECTORY_SEPARATOR, $dir);
-    }
-    $umask = umask(0);
-    $mkd = @mkdir($dir, $conf['chmod_value'], true);
-    umask($umask);
-    if ($mkd==false && !is_dir($dir) /* retest existence because of potential concurrent i.php with slow file systems*/)
-    {
-      return false;
-    }
-
-    $file = $dir.'/index.htm';
-    file_exists($file) or @file_put_contents( $file, 'Not allowed!' );
-  }
-  if ( !is_writable($dir) )
-  {
-    return false;
-  }
-  return true;
-}
 
 // end fast bootstrap
 
@@ -258,11 +223,11 @@ function parse_request()
     }
   }
 
-  if (is_file(PHPWG_ROOT_PATH.$req.$ext))
+  if (@is_file(PHPWG_ROOT_PATH.$req.$ext))
   {
     $req = './'.$req; // will be used to match #iamges.path
   }
-  elseif (is_file(PHPWG_ROOT_PATH.'../'.$req.$ext))
+  elseif (@is_file(PHPWG_ROOT_PATH.'../'.$req.$ext))
   {
     $req = '../'.$req;
   }
@@ -345,6 +310,9 @@ function try_switch_source(DerivativeParams $params, $original_mtime)
 function send_derivative($expires)
 {
   global $page;
+  
+  include_once(PHPWG_ROOT_PATH.'include/access_check.inc.php');
+  checkAccess();
 
   if (isset($_GET['ajaxload']) and $_GET['ajaxload'] == 'true')
   {
