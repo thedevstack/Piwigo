@@ -122,7 +122,7 @@ define('MKGETDIR_DEFAULT', MKGETDIR_RECURSIVE | MKGETDIR_DIE_ON_ERROR | MKGETDIR
  */
 function mkgetdir($dir, $flags=MKGETDIR_DEFAULT)
 {
-  if ( !is_dir($dir) )
+  if ( !@is_dir($dir) )
   {
     global $conf;
     if (substr(PHP_OS, 0, 3) == 'WIN')
@@ -391,7 +391,7 @@ SELECT id, name
   $languages = array();
   while ($row = pwg_db_fetch_assoc($result))
   {
-    if (is_dir(PHPWG_ROOT_PATH.'language/'.$row['id']))
+    if (@is_dir(PHPWG_ROOT_PATH.'language/'.$row['id']))
     {
       $languages[ $row['id'] ] = $row['name'];
     }
