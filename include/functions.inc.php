@@ -140,12 +140,12 @@ function mkgetdir($dir, $flags=MKGETDIR_DEFAULT)
     if( $flags&MKGETDIR_PROTECT_HTACCESS )
     {
       $file = $dir.'/.htaccess';
-      file_exists($file) or @file_put_contents( $file, 'deny from all' );
+      file_exists($file) or @file_put_contents( $file, 'DENY FROM all' );
     }
     if( $flags&MKGETDIR_PROTECT_INDEX )
     {
-      $file = $dir.'/index.htm';
-      file_exists($file) or @file_put_contents( $file, 'Not allowed!' );
+      $file = $dir.'/.htaccess';
+      file_exists($file) or @file_put_contents( $file, 'Options -Indexes' );
     }
   }
   if ( !is_writable($dir) )
