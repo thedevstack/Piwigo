@@ -94,7 +94,7 @@ class Template
     if (!isset($conf['data_dir_checked']))
     {
       $dir = PHPWG_ROOT_PATH.$conf['data_location'];
-      mkgetdir($dir, MKGETDIR_DEFAULT&~MKGETDIR_DIE_ON_ERROR);
+      mkgetdir($dir, MKGETDIR_RECURSIVE | MKGETDIR_PROTECT_INDEX);
       if (!is_writable($dir))
       {
         load_language('admin.lang');
@@ -1923,7 +1923,7 @@ final class FileCombiner
           $output .= "\n";
         }
         $output = "/*BEGIN header */\n" . $header . "\n" . $output;
-        mkgetdir( dirname(PHPWG_ROOT_PATH.$file) );
+        mkgetdir( dirname(PHPWG_ROOT_PATH.$file), MKGETDIR_RECURSIVE | MKGETDIR_DIE_ON_ERROR | MKGETDIR_PROTECT_INDEX );
         file_put_contents( PHPWG_ROOT_PATH.$file, $output );
         @chmod(PHPWG_ROOT_PATH.$file, 0644);
       }
